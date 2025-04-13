@@ -1,0 +1,20 @@
+@import "tailwindcss";
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+:root {
+    --primary-color: #1D4ED8; /* Primary color */
+    --secondary-color: grey; /* Secondary color */
+    --background-color: #fff;
+    --text-color: white
+}
+
+body {
+    /* background-color: var(--background-color); */
+    /* color: var(--text-color); */
+}
+
+.button {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-weight: bold;
+}
