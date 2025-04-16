@@ -14,7 +14,7 @@ export default function Dashboard() {
     price: "",
     description: "",
     stockQty: "",
-    image: "",
+    image: null,
   });
   const [loading, setLoading] = useState(true);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -23,6 +23,7 @@ export default function Dashboard() {
   const [showModal, setShowModal] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [editProductId, setEditProductId] = useState(null);
+  const [preview, setPreview] = useState(null);
   const { logout } = useAuth();
 
   const fetchProducts = useCallback(async () => {
@@ -64,6 +65,7 @@ export default function Dashboard() {
     const file = e.target.files[0];
     if (file) {
       setNewProduct({ ...newProduct, [e.target.name]: file });
+      setPreview(URL.createObjectURL(file));
     }
 };
 
@@ -74,16 +76,18 @@ const handleSubmit = async () => {
     formData.append("price", newProduct.price);
     formData.append("description", newProduct.description);
     formData.append("stockQty", newProduct.stockQty);
-    formData.append("image", newProduct.image); // Ensure this is a File object if uploading
-
+    if (newProduct.image) {
+      formData.append("image", newProduct.image); // Append the image file
+  }
     if (isEditMode) {
       // Convert FormData to JSON for PUT request
-      const jsonBody = Object.fromEntries(formData.entries()); 
+      // const jsonBody = Object.fromEntries(formData.entries()); 
 
       const response = await fetch(`/api/products/editProduct/${editProductId}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" }, // JSON Header
-        body: JSON.stringify(jsonBody),
+        // headers: { "Content-Type": "application/json" }, // JSON Header
+        // body: JSON.stringify(jsonBody),
+        body: formData
       });
 
       const data = await response.json();
@@ -95,12 +99,15 @@ const handleSubmit = async () => {
       }
     } else {
       // Keeping FormData for POST request (for image upload)
-      const jsonBody = Object.fromEntries(formData.entries()); 
+      // const jsonBody = Object.fromEntries(formData.entries()); 
       const response = await fetch("/api/products/addProduct", {
         method: "POST",
-        body: JSON.stringify(jsonBody),});
+        // body: JSON.stringify(jsonBody),
+        body: formData
+      });
 
       const data = await response.json();
+      console.log(data);
 
       if (response.ok) {
         toast.success("Product added successfully!");
@@ -114,7 +121,7 @@ const handleSubmit = async () => {
       price: "",
       description: "",
       stockQty: "",
-      image: "",
+      image: null,
     });
 
     modalHide();
@@ -124,6 +131,10 @@ const handleSubmit = async () => {
   }
 };
 
+const bufferToBase64 = (buffer) => {
+  return `data:${buffer.contentType};base64,${Buffer.from(buffer.data).toString('base64')}`;
+};
+
   const columns =[
     {
       header: "#",
@@ -131,8 +142,15 @@ const handleSubmit = async () => {
       cell: ({ row }) => row.index + 1,
     },
     {
-      header: "Name",
-      accessorKey: "productName",
+      header: "Product",
+      // accessorKey: "productName",
+      cell:({row})=>(
+        <div>
+          {row.original.image && (<img src={bufferToBase64(row.original.image)} alt={row.original.productName} width={50} height={50}/>)}
+        
+        <span>{row.original.productName}</span>
+        </div>
+      )
     },
     {
       header: "Description",
@@ -175,7 +193,7 @@ const handleSubmit = async () => {
             price: product.price,
             description: product.description || "",
             stockQty: product.stockQty || "",
-            image: product.image || "",
+            image: product.image || null,
           });
           setIsEditMode(true);
           setEditProductId(productId);
@@ -216,17 +234,10 @@ const handleSubmit = async () => {
       price: "",
       description: "",
       stockQty: "",
-      image: "",
+      image: null,
     });
+    setPreview(null);
   }
-
-  // const userData = {
-  //   id: "1",
-  //   name: "Sandy",
-  //   email: "john.doe@example.com",
-  //   profilePicture: "", // Placeholder image URL
-  //   role: "Admin",
-  // };
 
   const userData = JSON.parse(localStorage.getItem("UserData"));
 
@@ -254,14 +265,23 @@ const handleSubmit = async () => {
         {/* Bootstrap Modal for Adding Product */}
         <Modal show={showModal} onHide={() => modalHide()}>
           <Modal.Header closeButton>
-            <Modal.Title>Product</Modal.Title>
+            <Modal.Title>Product</Modal.Title>x``
           </Modal.Header>
           <Modal.Body>
             <input type="text" name="productName" placeholder="Product Name" value={newProduct.productName} onChange={handleInputChange} className="w-full p-2 mb-2 border rounded" />
             <input type="text" name="price" placeholder="Price" value={newProduct.price} onChange={handleInputChange} className="w-full p-2 mb-2 border rounded" />
             <textarea name="description" placeholder="Description" value={newProduct.description} onChange={handleInputChange} className="w-full p-2 mb-2 border rounded" />
             <input type="text" name="stockQty" placeholder="Stock Quantity" value={newProduct.stockQty} onChange={handleInputChange} className="w-full p-2 mb-4 border rounded" />
-            <input type="file" name="image" onChange={handleFileInput}/>
+            <input type="file" accept="image/*" onChange={handleFileInput} name="image"/>
+            {preview && (
+              <img
+                src={preview}
+                alt="Preview"
+                width={150}
+                height={150}
+                style={{ marginTop: 10 }}
+              />
+            )}
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={() => setShowModal(false)}>Cancel</Button>

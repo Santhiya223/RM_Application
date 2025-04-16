@@ -98,8 +98,8 @@ export default function Login () {
                             </div>
                         </div>
 
-                        <div className="text-white mb-2">
-                            <Link href="/forgot-password">Forgot Password?</Link>
+                        <div>
+                            <Link href="/forgot-password" className="text-white mb-2">Forgot Password?</Link>
                         </div>
 
                         <button 
@@ -134,7 +134,7 @@ export default function Login () {
 
                         <div className="text-white mt-4 text-center">
                             <span>Don't have an account yet?</span> 
-                            <Link href="/auth/signup" className="font-bold ml-1">Register for free</Link>
+                            <Link href="/auth/signup" className="font-bold ml-1 text-white">Register for free</Link>
                         </div>
                     </form>
                 </div>
