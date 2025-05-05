@@ -1,4 +1,5 @@
 "use client"
+import { signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -14,46 +15,34 @@ export const AuthProvider = ({children})=> {
             setUserData(storedUser);
         }
     }, []);
-    const login = async (formData)=> {
-         try {
-            const response = await fetch("/api/auth/login", {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({username: formData.username, password: formData.password})
-            })
+
+    const login = async (formData) => {
+      const result = await signIn("credentials", {
+        redirect: false,
+        username: formData.username,
+        password: formData.password,
+      });
     
-            if (!response.ok) {
-                throw new Error("Login failed");
-            }
-            
-            const data = await response.json();
-            localStorage.setItem("UserData",JSON.stringify(data.userData));
-            setUserData(data.userData);
-            router.push("/dashboard");
-        } catch(ex) {
-            console.error(`error in login: ${ex}`)
-            toast.error(ex.message || 'Login failed');
-        }
-    }
+      if (result.error) {
+        toast.error(result.error);
+      } else {
+        toast.success("Login successful");
+        router.push("/dashboard");
+      }
+    };
+    
 
     const logout = async () => {
-        try {
-            const response = await fetch("/api/auth/logout", { method: 'POST' });
-
-            if (!response.ok) {
-                throw new Error("Logout failed");
-            }
-
-            setUserData({});  // Clear user data
-            localStorage.removeItem("UserData");
-            router.push("/auth/login");  // Redirect to login page
-        } catch (ex) {
-            console.error(`error in logout: ${ex}`);
-            toast.error("Logout failed");
-        }
+      try {
+        await signOut({ redirect: true, callbackUrl: "/auth/login" });
+        localStorage.removeItem("UserData");
+        setUserData({});                     
+      } catch (ex) {
+        console.error(`error in logout: ${ex}`);
+        toast.error("Logout failed");
+      }
     };
+    
 
     return (
         <AuthContext.Provider value={{login,userData,logout}}>{children}</AuthContext.Provider>

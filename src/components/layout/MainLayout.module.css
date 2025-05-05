@@ -1,0 +1,13 @@
+.dashboardContainer {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f9f9f9;
+}
+
+.mainContent {
+  margin-left: 40px; /* Increased for better spacing */
+  margin-top: 80px; /* Match top bar height */
+  padding: 5px;
+  width: calc(100% - 80px);
+  min-height: calc(100vh - 40px);
+}

@@ -1,16 +1,18 @@
-"use client"
-import { useAuth } from "@/context/AuthContext";
-import AdminDashboard from "@/components/AdminDashBoard";
-import UserDashboard from "@/components/UserDashboard";
+"use client";
+
+import AdminDashboard from "@/app/(other)/dashboard/components/AdminDashBoard";
+import UserDashboard from "@/app/(other)/dashboard/components/UserDashboard";
+import { useSession } from "next-auth/react";
 
 export default function Dashboard() {
-  const { userData } = useAuth();
-  console.log(`djflgdljg${userData.isAdmin}`);
-  if (!userData || userData.isAdmin === undefined) {
-    return <p>Loading...</p>;
-  }
+  const { data: session, status } = useSession();
 
-  console.log("User Data in Dashboard:", userData); // Debugging
+  if (status === "loading") return <p>Loading...</p>;
 
-  return userData.isAdmin === true || userData.isAdmin === "true" ? <AdminDashboard /> : <UserDashboard />;
+  const user = session?.user;
+
+  console.log("User Session Data:", user);
+  
+
+  return user?.isAdmin ? <AdminDashboard /> : <UserDashboard />;
 }

@@ -1,9 +1,10 @@
 "use client"
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import "@/styles/globals.css";
 import { SessionProvider } from "next-auth/react";
 import { AuthProvider } from "@/context/AuthContext";
 import { Toaster } from "react-hot-toast";
+import { CartProvider } from "@/context/CartContext";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -25,7 +26,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-       <AuthProvider><SessionProvider>{children}<Toaster /></SessionProvider></AuthProvider> 
+       <AuthProvider><CartProvider><SessionProvider>{children}<Toaster /></SessionProvider></CartProvider></AuthProvider> 
       </body>
     </html>
   );

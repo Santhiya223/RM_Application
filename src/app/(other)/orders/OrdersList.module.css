@@ -1,0 +1,275 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  
+  .backLink {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .backLink:hover {
+    text-decoration: underline;
+  }
+  
+  .filterBar {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+  
+  .filterGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .filterGroup label {
+    font-size: 0.875rem;
+    color: #4b5563;
+  }
+  
+  .filterGroup select,
+  .filterGroup input {
+    padding: 0.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+  }
+  
+  .empty {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .empty p {
+    color: #6b7280;
+    margin-bottom: 1.5rem;
+  }
+  
+  .shopLink {
+    padding: 0.75rem 1.5rem;
+    background-color: #2563eb;
+    color: white;
+    border-radius: 0.375rem;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.2s;
+  }
+  
+  .shopLink:hover {
+    background-color: #1d4ed8;
+  }
+  
+  .ordersTable {
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+  
+  .tableHeader {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr auto;
+    padding: 1rem 1.5rem;
+    background-color: #f9fafb;
+    font-weight: 600;
+    color: #374151;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .orderRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr auto;
+    padding: 1rem 1.5rem;
+    align-items: center;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .orderRow:last-child {
+    border-bottom: none;
+  }
+  
+  .colOrderId {
+    font-weight: 500;
+  }
+  
+  .orderLink {
+    color: #2563eb;
+    text-decoration: none;
+  }
+  
+  .orderLink:hover {
+    text-decoration: underline;
+  }
+  
+  .colTotal {
+    font-weight: 600;
+  }
+  
+  .statusBadge {
+    padding: 0.375rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    display: inline-block;
+  }
+  
+  .statusBadge[data-status="processing"] {
+    background-color: #fef3c7;
+    color: #92400e;
+  }
+  
+  .statusBadge[data-status="shipped"] {
+    background-color: #dbeafe;
+    color: #1e40af;
+  }
+  
+  .statusBadge[data-status="delivered"] {
+    background-color: #dcfce7;
+    color: #166534;
+  }
+  
+  .statusBadge[data-status="cancelled"] {
+    background-color: #fee2e2;
+    color: #991b1b;
+  }
+  
+  .colAction {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .viewButton {
+    padding: 0.375rem 0.75rem;
+    background-color: #f3f4f6;
+    color: #111827;
+    border-radius: 0.375rem;
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: background-color 0.2s;
+  }
+  
+  .viewButton:hover {
+    background-color: #e5e7eb;
+  }
+  
+  .cancelButton {
+    padding: 0.375rem 0.75rem;
+    background-color: #fee2e2;
+    color: #b91c1c;
+    border: none;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .cancelButton:hover {
+    background-color: #fecaca;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  
+  .pagination button {
+    padding: 0.5rem 1rem;
+    background-color: #f3f4f6;
+    color: #111827;
+    border: none;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .pagination button:hover:not(:disabled) {
+    background-color: #e5e7eb;
+  }
+  
+  .pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .pagination span {
+    color: #4b5563;
+    font-size: 0.875rem;
+  }
+  
+  .loading,
+  .error {
+    text-align: center;
+    padding: 4rem 2rem;
+    font-size: 1.25rem;
+  }
+  
+  .error {
+    color: #dc2626;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .tableHeader {
+      display: none;
+    }
+  
+    .orderRow {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+      padding: 1rem;
+      position: relative;
+    }
+  
+    .colOrderId::before {
+      content: "Order ID: ";
+      font-weight: 600;
+    }
+  
+    .colDate::before {
+      content: "Date: ";
+      font-weight: 600;
+    }
+  
+    .colItems::before {
+      content: "Items: ";
+      font-weight: 600;
+    }
+  
+    .colTotal::before {
+      content: "Total: ";
+      font-weight: 600;
+    }
+  
+    .colStatus::before {
+      content: "Status: ";
+      font-weight: 600;
+    }
+  
+    .colAction {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+    }
+  }
